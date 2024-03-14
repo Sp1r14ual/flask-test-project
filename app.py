@@ -1,9 +1,11 @@
 import os
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from docx import Document
 from docx.oxml.shared import qn
 from docxtpl import DocxTemplate
+from io import BytesIO
+
 
 app = Flask(__name__)
 
@@ -16,6 +18,24 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# @app.route('/download_docx', methods=['GET'])
+# def download_docx():
+#     # Создание пустого документа .docx
+#     doc = Document()
+#     # Добавление текста "Hello World" в документ
+#     doc.add_paragraph("Hello World")
+#     # Создание временного буфера для сохранения файла
+#     doc_buffer = BytesIO()
+#     # Сохранение документа в буфер
+#     doc.save(doc_buffer)
+#     # Установка указателя на начало буфера
+#     doc_buffer.seek(0)
+#     # Отправка файла для скачивания
+#     return send_file(doc_buffer, as_attachment=True, download_name='empty_document.docx', mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+
+@app.route('/hello', methods=['GET'])
+def hello():
+    return "Hello World"
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
